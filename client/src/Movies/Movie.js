@@ -8,8 +8,6 @@ function Movie({ addToSavedList, movieList, setMovieList, getMovieList }) {
   const params = useParams();
   const { push } = useHistory();
 
-  console.log(setMovieList)
-
   const fetchMovie = (id) => {
     axios
       .get(`http://localhost:5000/api/movies/${id}`)
@@ -25,7 +23,6 @@ function Movie({ addToSavedList, movieList, setMovieList, getMovieList }) {
     e.preventDefault();
     axios.delete(`http://localhost:5000/api/movies/${params.id}`)
     .then(res => {
-      console.log(res);
 
       const updatedList = movieList.map(boop => {
         if(boop.id !== res.data.id){
