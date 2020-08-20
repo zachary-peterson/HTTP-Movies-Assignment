@@ -6,6 +6,8 @@ const MovieCard = props => {
   const { id } = useParams();
   const { push } = useHistory();
 
+  console.log(props)
+
   return (
     <div className="movie-card">
       <h2>{title}</h2>
@@ -22,9 +24,8 @@ const MovieCard = props => {
           {star}
         </div>
       ))}
-
-      <button onClick={() => push(`/update-movie/${id}`)}>Edit</button>
-      <button>Delete</button>
+        <br/>
+      
     </div>
   );
 };

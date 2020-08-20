@@ -23,22 +23,22 @@ const App = () => {
 
   useEffect(() => {
     getMovieList();
-  }, []);
+  }, [movieList.length]);
 
   return (
     <>
       <SavedList list={savedList} />
 
       <Route exact path="/">
-        <MovieList movies={movieList} />
+        <MovieList movies={movieList} setMovieList={setMovieList}/>
       </Route>
 
       <Route path="/movies/:id">
-        <Movie addToSavedList={addToSavedList} />
+        <Movie addToSavedList={addToSavedList} movieList={movieList} setMovieList={setMovieList} getMovieList={getMovieList}/>
       </Route>
 
       <Route path='/update-movie/:id'>
-        <UpdateForm setMovieList={setMovieList} />
+        <UpdateForm movieList={movieList} setMovieList={setMovieList} getMovieList={getMovieList} />
       </Route>
     </>
   );

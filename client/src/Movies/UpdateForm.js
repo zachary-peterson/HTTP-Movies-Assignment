@@ -1,40 +1,54 @@
-import React from 'react';
-import { useParams, useHistory, useState } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const emptyForm = {
   id: '',
   title: '',
   director: '',
   metascore: '',
-  // stars: [],
+  stars: [],
 }
 
-export const UpdateForm = () => {
-  const { id } = useParams();
-  const { push } = useHistory();
+export const UpdateForm = props => {
+  const params = useParams();
+  const { history, push } = useHistory();
   const [movie, setMovie] = useState(emptyForm);
+
+  useEffect(() => {
+    axios
+    .get(`http://localhost:5000/api/movies/${params.id}`)
+    .then(res => {
+      // console.log(res.data)
+      setMovie(res.data);
+    })
+    .catch(err => {
+      console.dir(err)
+    })
+  }, [params.id])
 
   const handleChanges = e => {
     setMovie({...movie, [e.target.name] : e.target.value});
   };
 
+  console.log(props.movieList)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // make a PUT request to edit the item
     axios
-      .put(`http://localhost:3333/update-movie/${id}`, movie)
+      .put(`http://localhost:5000/api/movies/${params.id}`, movie)
       .then((res) => {
-        // this works because the server sends us the full array of items
-        props.setItems(res.data);
-        history.push(`/item-list/${id}`);
+        const updatedMovies = props.movieList.map(newMovie => {
+          if(newMovie.id === res.data.id){
+            setMovie(res.data)
+          }else{
+            return newMovie
+          }
+        })
 
-        // afternoon project
-        // the server will only send back the updated item
-        // const newItemArr = props.items.map(v => {
-        //   if () {//v is the item we updated - return the new item
-        //     else {} // return v untouched
-        // })
-        // props.setItems(newItemArr);
+        props.setMovieList(updatedMovies);
+        props.getMovieList();
         push('/movies');
       })
       .catch((err) => console.error(err.message));
@@ -43,6 +57,12 @@ export const UpdateForm = () => {
   return (
     <div>
       <form>
+        <input
+          type='text'
+          name='id'
+          onChange={handleChanges}
+          value={movie.id}
+        />
 
         <input
           type='text'
@@ -65,13 +85,7 @@ export const UpdateForm = () => {
           value={movie.metascore}
         />
 
-        {/* <input
-          type=''
-          name=''
-          onChange={handleChanges}
-        /> */}
-
-        <button onClick=''>Submit</button>
+        <button onClick={handleSubmit}>Submit</button>
       </form>
     </div>
   )
