@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
+
 function SavedList({ list }) {
   return (
     <div className="saved-list">
