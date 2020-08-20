@@ -6,7 +6,7 @@ import MovieCard from "./MovieCard";
 function Movie({ addToSavedList, movieList, setMovieList, getMovieList }) {
   const [movie, setMovie] = useState(null);
   const params = useParams();
-  const { history, push } = useHistory();
+  const { push } = useHistory();
 
   console.log(setMovieList)
 
@@ -26,11 +26,12 @@ function Movie({ addToSavedList, movieList, setMovieList, getMovieList }) {
     axios.delete(`http://localhost:5000/api/movies/${params.id}`)
     .then(res => {
       console.log(res);
-      
+
       const updatedList = movieList.map(boop => {
         if(boop.id !== res.data.id){
           return boop
         }else{}
+
       })
 
       setMovieList(updatedList);

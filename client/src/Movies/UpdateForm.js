@@ -1,18 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 
 const emptyForm = {
-  id: '',
+  // id: '',
   title: '',
   director: '',
   metascore: '',
   stars: [],
-}
+};
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 1% auto;
+
+  input {
+    width: 75%;
+    margin: 1% auto;
+    min-height: 30px;
+    font-size: 1.5rem;
+  }
+
+  button {
+    width: 25%;
+    margin: 0 auto;
+  }
+`
 
 export const UpdateForm = props => {
   const params = useParams();
-  const { history, push } = useHistory();
+  const { push } = useHistory();
   const [movie, setMovie] = useState(emptyForm);
 
   useEffect(() => {
@@ -45,24 +65,26 @@ export const UpdateForm = props => {
           }else{
             return newMovie
           }
+
         })
 
         props.setMovieList(updatedMovies);
+        
+        push('/');
         props.getMovieList();
-        push('/movies');
       })
       .catch((err) => console.error(err.message));
   };
 
   return (
     <div>
-      <form>
-        <input
+      <StyledForm>
+        {/* <input
           type='text'
           name='id'
           onChange={handleChanges}
           value={movie.id}
-        />
+        /> */}
 
         <input
           type='text'
@@ -86,7 +108,7 @@ export const UpdateForm = props => {
         />
 
         <button onClick={handleSubmit}>Submit</button>
-      </form>
+      </StyledForm>
     </div>
   )
 }

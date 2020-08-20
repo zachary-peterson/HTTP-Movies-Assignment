@@ -1,10 +1,7 @@
 import React from 'react';
-import { useHistory, useParams } from 'react-router-dom';
 
 const MovieCard = props => {
   const { title, director, metascore, stars } = props.movie;
-  const { id } = useParams();
-  const { push } = useHistory();
 
   console.log(props)
 
